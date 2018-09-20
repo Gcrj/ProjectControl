@@ -1,9 +1,10 @@
 package com.gcrj.projectcontrol.bean
 
-class ProjectBean {
+class SubProjectBean {
 
     var id: Int? = null
+    var project_id: Int? = null
     var name: String? = null
-    var create_user: UserBean? = null
+    var progress: Int? = null
 
 }

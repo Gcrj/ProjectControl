@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.ViewConfiguration
 import com.gcrj.projectcontrol.R
@@ -28,6 +29,9 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overridePendingTransition(R.anim.anim_in_from_right, R.anim.anim_out_to_left)
+        if (intent.getStringExtra("actionbar_title") != null) {
+            title = intent.getStringExtra("actionbar_title")
+        }
     }
 
     override fun finish() {
@@ -75,6 +79,17 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
 }

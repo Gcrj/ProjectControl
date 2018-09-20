@@ -14,14 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
-            android:configChanges="screenSize|keyboardHidden">
+            android:name=".activity.SplashActivity"
+            android:configChanges="screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="screenSize|keyboardHidden" />
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -71,6 +76,23 @@
             android:name=".activity.SettingActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/setting" />
+        <activity
+            android:name=".activity.NewTaskActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/new_task" />
+        <activity
+            android:name=".activity.NewActivityActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/new_activity" />
+        <activity
+            android:name=".activity.ActivityActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/activity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.ActivityRelatedActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/activity_related" />
     </application>
 
 </manifest>

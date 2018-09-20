@@ -4,7 +4,7 @@ import android.app.Application
 import android.text.TextUtils
 import cn.jpush.android.api.JPushInterface
 import com.facebook.stetho.Stetho
-import com.gcrj.projectcontrol.bean.LoginBean
+import com.gcrj.projectcontrol.bean.UserBean
 import com.gcrj.projectcontrol.util.Constant
 import com.gcrj.projectcontrol.util.SharedPreferenceUtils
 import com.google.gson.Gson
@@ -19,7 +19,7 @@ class BaseApplication : Application() {
         lateinit var application: BaseApplication
             private set
         @JvmStatic
-        var USER_INFO: LoginBean? = null
+        var USER_INFO: UserBean? = null
             set(value) {
                 SharedPreferenceUtils.setString(Constant.USER_INFO_KEY, Gson().toJson(value))
                 field = value
@@ -39,7 +39,7 @@ class BaseApplication : Application() {
         val userInfoStr = SharedPreferenceUtils.getString(this, Constant.USER_INFO_KEY)
         if (!TextUtils.isEmpty(userInfoStr)) {
             try {
-                USER_INFO = Gson().fromJson(userInfoStr, LoginBean::class.java)
+                USER_INFO = Gson().fromJson(userInfoStr, UserBean::class.java)
             } catch (e: JsonParseException) {
             }
         }

@@ -2,6 +2,7 @@ package com.gcrj.projectcontrol.activity
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.ViewGroup
 import com.gcrj.projectcontrol.R
@@ -75,6 +76,14 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onNavigationItemReselected(menuItem: MenuItem) {
 
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            return true
+        }
+
+        return super.onKeyDown(keyCode, event)
     }
 
 }

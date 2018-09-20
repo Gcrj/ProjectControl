@@ -1,6 +1,6 @@
 package com.gcrj.projectcontrol.bean
 
-class LoginBean {
+class UserBean {
 
     var id: Int? = null
     var username: String? = null

@@ -14,4 +14,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_task">新建任务</string>
+    <string name="new_activity">新建界面</string>
+    <string name="task_name">任务名</string>
+    <string name="activity">界面</string>
+    <string name="activity_name">界面名</string>
+    <string name="activity_related">界面相关</string>
 </resources>

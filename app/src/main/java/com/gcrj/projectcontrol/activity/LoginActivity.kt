@@ -1,18 +1,17 @@
 package com.gcrj.projectcontrol.activity
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import com.gcrj.projectcontrol.BaseApplication
 import com.gcrj.projectcontrol.R
 import com.gcrj.projectcontrol.base.BaseActivity
-import com.gcrj.projectcontrol.bean.LoginBean
+import com.gcrj.projectcontrol.bean.UserBean
 import com.gcrj.projectcontrol.http.ResponseCallback
 import com.gcrj.projectcontrol.http.RetrofitManager
 import com.gcrj.projectcontrol.util.ToastUtils
 import com.gcrj.projectcontrol.util.Tool
+import com.gcrj.projectcontrol.util.startActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import org.greenrobot.eventbus.EventBus
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
@@ -21,17 +20,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_login)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         btn_login.setOnClickListener(this)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onClick(v: View?) {
@@ -51,14 +39,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private val callback by lazy {
-        object : ResponseCallback<LoginBean>() {
+        object : ResponseCallback<UserBean>() {
 
             override fun onStart() = !isDestroyed
 
-            override fun onSuccess(data: LoginBean) {
+            override fun onSuccess(data: UserBean) {
                 BaseApplication.USER_INFO = data
                 ToastUtils.showToast("登录成功")
-                EventBus.getDefault().post(data)
+                startActivity<MainActivity>()
                 finish()
             }
 

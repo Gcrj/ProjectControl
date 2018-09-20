@@ -23,24 +23,10 @@
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_avator"
-        tools:text="用户名"
-        tools:visibility="visible" />
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="立即登录"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_avator"
-        tools:visibility="visible" />
+        tools:text="用户名" />
 
     <TextView
         android:id="@+id/tv_my_column"
@@ -53,6 +39,6 @@
         android:text="设置"
         android:textColor="#333333"
         android:textSize="15sp"
-        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
 </android.support.constraint.ConstraintLayout>

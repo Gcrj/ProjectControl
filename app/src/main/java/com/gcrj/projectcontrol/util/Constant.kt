@@ -7,6 +7,7 @@ object Constant {
 
     const val SHARED_PREFERENCE_NAME = "pc_app"
     const val USER_INFO_KEY = "user_info_key"
+    const val ACTIONBAR_TITLE = "actionbar_title"
 
     const val BASE_URL = "http://10.10.0.68:8088"
 
