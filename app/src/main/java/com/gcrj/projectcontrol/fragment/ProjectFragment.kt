@@ -2,21 +2,22 @@ package com.gcrj.projectcontrol.fragment
 
 
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import com.gcrj.projectcontrol.R
+import com.gcrj.projectcontrol.activity.SubProjectActivity
 import com.gcrj.projectcontrol.adapter.ProjectAdapter
 import com.gcrj.projectcontrol.base.BaseFragment
 import com.gcrj.projectcontrol.bean.ProjectBean
 import com.gcrj.projectcontrol.http.ResponseCallback
 import com.gcrj.projectcontrol.http.RetrofitManager
+import com.gcrj.projectcontrol.util.Constant
 import com.gcrj.projectcontrol.util.ToastUtils
+import com.gcrj.projectcontrol.util.startActivity
 import com.gcrj.projectcontrol.view.LoadingLayout
 import com.gcrj.projectcontrol.viewRelated.RecycleViewDivider
 import kotlinx.android.synthetic.main.fragment_project.*
 
-class ProjectFragment : BaseFragment(), LoadingLayout.OnRetryListener, SwipeRefreshLayout.OnRefreshListener {
+class ProjectFragment : BaseFragment(), LoadingLayout.OnRetryListener, androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener {
 
     override fun inflateView() = R.layout.fragment_project
 
@@ -60,12 +61,15 @@ class ProjectFragment : BaseFragment(), LoadingLayout.OnRetryListener, SwipeRefr
                 }
 
                 if (adapter.data.isEmpty()) {
-                    recycler_view.layoutManager = LinearLayoutManager(context)
+                    recycler_view.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                     recycler_view.adapter = adapter
-                    val divider = RecycleViewDivider(context, LinearLayoutManager.HORIZONTAL)
+                    val divider = RecycleViewDivider(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL)
                     recycler_view.addItemDecoration(divider)
                     adapter.setOnItemClickListener { _, _, position ->
-                        ToastUtils.showToast(adapter.data[position].name)
+                        startActivity<SubProjectActivity> {
+                            it.putExtra(Constant.ACTIONBAR_TITLE, adapter.data[position].name)
+                            it.putExtra("project_id", adapter.data[position].id)
+                        }
                     }
                     loading_layout.state = LoadingLayout.SUCCESS
                 }

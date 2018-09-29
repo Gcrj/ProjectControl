@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+
+    <!--<external-files-path-->
+        <!--name="pc_external_files"-->
+        <!--path="download" />-->
+
+    <!--<external-path-->
+        <!--name="pc_external"-->
+        <!--path="download" />-->
+
+    <cache-path
+        name="pc_private_cache_path"
+        path="/" />
+
+</paths>

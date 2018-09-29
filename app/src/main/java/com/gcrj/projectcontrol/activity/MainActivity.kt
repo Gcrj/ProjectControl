@@ -1,20 +1,21 @@
 package com.gcrj.projectcontrol.activity
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.fragment.app.transaction
 import com.gcrj.projectcontrol.R
 import com.gcrj.projectcontrol.base.BaseActivity
 import com.gcrj.projectcontrol.fragment.MineFragment
 import com.gcrj.projectcontrol.fragment.ProjectFragment
-import com.gcrj.projectcontrol.fragment.TaskFragment
+import com.gcrj.projectcontrol.fragment.SubProjectFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemReselectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private var taskFragment: TaskFragment? = null
+    private var subProjectFragment: SubProjectFragment? = null
     private var projectFragment: ProjectFragment? = null
     private var mineFragment: MineFragment? = null
 
@@ -24,53 +25,52 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
         bnv.setOnNavigationItemSelectedListener(this)
         bnv.itemIconSize = ViewGroup.LayoutParams.WRAP_CONTENT
         if (savedInstanceState == null) {
-            taskFragment = TaskFragment()
-            supportFragmentManager.beginTransaction().add(R.id.fl_container, taskFragment!!).commitAllowingStateLoss()
+            subProjectFragment = SubProjectFragment()
+            supportFragmentManager.beginTransaction().add(R.id.fl_container, subProjectFragment!!).commitAllowingStateLoss()
         } else {
             supportFragmentManager.fragments.forEach {
                 when (it) {
-                    is TaskFragment -> taskFragment = it
+                    is SubProjectFragment -> subProjectFragment = it
                     is ProjectFragment -> projectFragment = it
                     is MineFragment -> mineFragment = it
                 }
             }
         }
-
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        val transaction = supportFragmentManager.beginTransaction()
-        taskFragment?.let {
-            transaction.hide(it)
-        }
-        projectFragment?.let {
-            transaction.hide(it)
-        }
-        mineFragment?.let {
-            transaction.hide(it)
-        }
+        supportFragmentManager.transaction(allowStateLoss = true) {
+            subProjectFragment?.let {
+                hide(it)
+            }
+            projectFragment?.let {
+                hide(it)
+            }
+            mineFragment?.let {
+                hide(it)
+            }
 
-        when (menuItem.itemId) {
-            R.id.menu_task -> transaction.show(taskFragment!!)
-            R.id.menu_project -> {
-                if (projectFragment == null) {
-                    projectFragment = ProjectFragment()
-                    transaction.add(R.id.fl_container, projectFragment!!)
-                } else {
-                    transaction.show(projectFragment!!)
+            when (menuItem.itemId) {
+                R.id.menu_sub_project -> show(subProjectFragment!!)
+                R.id.menu_project -> {
+                    if (projectFragment == null) {
+                        projectFragment = ProjectFragment()
+                        add(R.id.fl_container, projectFragment!!)
+                    } else {
+                        show(projectFragment!!)
+                    }
+                }
+                R.id.menu_mine -> {
+                    if (mineFragment == null) {
+                        mineFragment = MineFragment()
+                        add(R.id.fl_container, mineFragment!!)
+                    } else {
+                        show(mineFragment!!)
+                    }
                 }
             }
-            R.id.menu_mine -> {
-                if (mineFragment == null) {
-                    mineFragment = MineFragment()
-                    transaction.add(R.id.fl_container, mineFragment!!)
-                } else {
-                    transaction.show(mineFragment!!)
-                }
-            }
         }
 
-        transaction.commitAllowingStateLoss()
         return true
     }
 

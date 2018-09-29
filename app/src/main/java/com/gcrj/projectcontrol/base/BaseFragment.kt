@@ -1,18 +1,17 @@
 package com.gcrj.projectcontrol.base
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.annotation.IdRes
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewCompat
 import android.view.*
+import androidx.annotation.CallSuper
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
+import androidx.core.view.ViewCompat
 
 /**
  * Created by zhangxin on 2017/7/19.
  */
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
     @JvmField
     protected val TAG: String = javaClass.simpleName

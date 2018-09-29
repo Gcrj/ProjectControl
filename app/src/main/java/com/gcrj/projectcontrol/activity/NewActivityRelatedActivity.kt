@@ -10,13 +10,16 @@ import com.gcrj.projectcontrol.http.NothingResponseCallback
 import com.gcrj.projectcontrol.http.RetrofitManager
 import com.gcrj.projectcontrol.util.ToastUtils
 import com.gcrj.projectcontrol.view.ProgressDialog
-import kotlinx.android.synthetic.main.activity_new_activity.*
+import kotlinx.android.synthetic.main.activity_new_related.*
 import org.greenrobot.eventbus.EventBus
 
-class NewActivityActivity : BaseActivity(), View.OnClickListener {
+class NewActivityRelatedActivity : BaseActivity(), View.OnClickListener {
 
     private val subProjectId by lazy {
         intent.getIntExtra("sub_project_id", 0)
+    }
+    private val activityId by lazy {
+        intent.getIntExtra("activity_id", 0)
     }
 
     private val dialog by lazy {
@@ -25,21 +28,15 @@ class NewActivityActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_activity)
+        setContentView(R.layout.activity_new_related)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         btn_add.setOnClickListener(this)
-        btn_new_activity.setOnClickListener(this)
+        btn_new_activity_related.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v) {
-            btn_new_activity -> {
-                val name = et_activity_name.text.toString().trim()
-                if (name == "") {
-                    ToastUtils.showToast(til_activity_name.hint.toString())
-                    return
-                }
-
+            btn_new_activity_related -> {
                 val sb = StringBuilder()
                 (0 until ll_parent.childCount).forEach {
                     val child = ll_parent.getChildAt(it)
@@ -57,7 +54,7 @@ class NewActivityActivity : BaseActivity(), View.OnClickListener {
 
                 val type = sb.deleteCharAt(0).toString()
                 dialog.show()
-                RetrofitManager.apiService.addActivity(subProjectId, name, type).enqueue(callback)
+                RetrofitManager.apiService.addActivityRelated(subProjectId, activityId, type).enqueue(callback)
             }
             btn_add -> {
                 val other = et_other.text.toString().trim()

@@ -1,18 +1,16 @@
 package com.gcrj.projectcontrol.fragment
 
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.gcrj.projectcontrol.R
 import com.gcrj.projectcontrol.activity.ActivityActivity
-import com.gcrj.projectcontrol.activity.NewTaskActivity
+import com.gcrj.projectcontrol.activity.NewSubProjectActivity
 import com.gcrj.projectcontrol.adapter.SubProjectAdapter
 import com.gcrj.projectcontrol.base.BaseFragment
 import com.gcrj.projectcontrol.bean.RefreshProgress
@@ -22,23 +20,18 @@ import com.gcrj.projectcontrol.http.RetrofitManager
 import com.gcrj.projectcontrol.util.Constant
 import com.gcrj.projectcontrol.util.ToastUtils
 import com.gcrj.projectcontrol.util.startActivity
-import com.gcrj.projectcontrol.util.startActivityForResult
 import com.gcrj.projectcontrol.view.LoadingLayout
 import com.gcrj.projectcontrol.viewRelated.RecycleViewDivider
-import kotlinx.android.synthetic.main.fragment_task.*
+import kotlinx.android.synthetic.main.fragment_sub_project.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
-class TaskFragment : BaseFragment(), LoadingLayout.OnRetryListener, SwipeRefreshLayout.OnRefreshListener {
+class SubProjectFragment : BaseFragment(), LoadingLayout.OnRetryListener, SwipeRefreshLayout.OnRefreshListener {
 
-    companion object {
-        private const val REQUEST_CODE_NEW_TASK = 1
-    }
-
-    override fun inflateView() = R.layout.fragment_task
+    override fun inflateView() = R.layout.fragment_sub_project
 
     override fun visibleToUser() {
-        (activity as? AppCompatActivity)?.supportActionBar?.setTitle(R.string.task)
+        (activity as? AppCompatActivity)?.supportActionBar?.setTitle(R.string.sub_project)
     }
 
     private val adapter by lazy {
@@ -55,7 +48,7 @@ class TaskFragment : BaseFragment(), LoadingLayout.OnRetryListener, SwipeRefresh
     }
 
     private fun getData() {
-        RetrofitManager.apiService.subProjectList().enqueue(callback)
+        RetrofitManager.apiService.subProjectListByUser().enqueue(callback)
     }
 
     override fun onRetry(state: Int) {
@@ -120,13 +113,13 @@ class TaskFragment : BaseFragment(), LoadingLayout.OnRetryListener, SwipeRefresh
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_task, menu);
+        inflater.inflate(R.menu.menu_sub_project, menu);
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.menu_new_task -> {
-                startActivityForResult<NewTaskActivity>(REQUEST_CODE_NEW_TASK)
+            R.id.menu_new_sub_project -> {
+                startActivity<NewSubProjectActivity>()
                 return true
             }
         }
@@ -134,17 +127,14 @@ class TaskFragment : BaseFragment(), LoadingLayout.OnRetryListener, SwipeRefresh
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_NEW_TASK && resultCode == Activity.RESULT_OK) {
-            swipe_refresh_layout.isRefreshing = true
-            getData()
-        }
-    }
-
     @Subscribe()
     fun handleEvent(refreshProgress: RefreshProgress) {
-        swipe_refresh_layout.isRefreshing = true
+        if (loading_layout.state == LoadingLayout.SUCCESS) {
+            swipe_refresh_layout.isRefreshing = true
+        } else {
+            loading_layout.state = LoadingLayout.LOADING
+        }
+
         getData()
     }
 

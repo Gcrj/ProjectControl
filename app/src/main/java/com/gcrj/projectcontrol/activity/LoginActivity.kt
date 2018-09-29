@@ -11,9 +11,14 @@ import com.gcrj.projectcontrol.http.RetrofitManager
 import com.gcrj.projectcontrol.util.ToastUtils
 import com.gcrj.projectcontrol.util.Tool
 import com.gcrj.projectcontrol.util.startActivity
+import com.gcrj.projectcontrol.view.ProgressDialog
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
+
+    private val dialog by lazy {
+        ProgressDialog(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +37,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     return
                 }
 
+                dialog.show()
                 RetrofitManager.apiService.login(username, Tool.getMD5Str(password)
                         ?: "").enqueue(callback)
             }
@@ -57,6 +63,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             override fun onNoNet(message: String) {
                 ToastUtils.showToast(message)
             }
+
+            override fun onAfter() {
+                dialog.dismiss()
+            }
+
         }
     }
 

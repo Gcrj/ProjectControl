@@ -20,6 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keep class com.gcrj.projectcontrol.bean.**{ *; }
+
 #EventBus
 -keepattributes *Annotation*
 -keepclassmembers class * {

@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_task"
-        android:icon="@drawable/icon_task"
-        android:title="@string/task" />
+        android:id="@+id/menu_sub_project"
+        android:icon="@drawable/icon_sub_project"
+        android:title="@string/sub_project" />
 
     <item
         android:id="@+id/menu_project"

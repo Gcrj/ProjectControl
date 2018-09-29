@@ -1,6 +1,6 @@
 package com.gcrj.projectcontrol.util
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import android.text.TextUtils
 import android.widget.Toast
 import com.gcrj.projectcontrol.BaseApplication

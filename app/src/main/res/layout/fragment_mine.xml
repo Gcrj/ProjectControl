@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,25 +20,40 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_avator"
         tools:text="用户名" />
 
     <TextView
-        android:id="@+id/tv_my_column"
+        android:id="@+id/tv_preview_xls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="?attr/selectableItemBackground"
         android:drawableEnd="@android:drawable/ic_media_play"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:text="设置"
+        android:text="@string/preview_xls"
         android:textColor="#333333"
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_my_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:drawableEnd="@android:drawable/ic_media_play"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="@string/setting"
+        android:textColor="#333333"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_preview_xls" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

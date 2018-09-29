@@ -3,10 +3,10 @@ package com.gcrj.projectcontrol.base
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.ViewConfiguration
+import androidx.appcompat.app.AppCompatActivity
 import com.gcrj.projectcontrol.R
 
 /**
@@ -16,13 +16,13 @@ import com.gcrj.projectcontrol.R
 open class BaseActivity : AppCompatActivity() {
 
     @JvmField
-    protected val TAG = javaClass.simpleName
+    protected val TAG = this::class.java.simpleName
     @JvmField
     protected var isResumed = false
     @JvmField
     protected var swipeFinishEnable = true
-    private var downX: Float = 0.toFloat()
-    private var lastX: Float = 0.toFloat()
+    private var downX = 0.toFloat()
+    private var lastX = 0.toFloat()
     private var swipeEnableThisTime = true
     private var edgeSlop: Int = 0
 
@@ -74,7 +74,7 @@ open class BaseActivity : AppCompatActivity() {
             if (moveDistanceX > 200) {
                 finish()
                 val now = SystemClock.uptimeMillis()
-                super.dispatchTouchEvent(MotionEvent.obtain(now, now, MotionEvent.ACTION_CANCEL, 0.0f, 0.0f, 0))
+                return super.dispatchTouchEvent(MotionEvent.obtain(now, now, MotionEvent.ACTION_CANCEL, 0.0f, 0.0f, 0))
             }
         }
 

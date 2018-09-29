@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".activity.NewActivityActivity">
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_activity_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/et_activity_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/activity_name" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+    tools:context=".activity.NewActivityRelatedActivity">
 
     <TextView
         android:id="@+id/tv_hint"
@@ -71,17 +55,17 @@
             android:id="@+id/btn_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="0dp"
             android:minWidth="0dp"
+            android:minHeight="0dp"
             android:text="增加" />
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_new_activity"
+        android:id="@+id/btn_new_activity_related"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/new_activity" />
+        android:text="@string/new_activity_related" />
 
 </LinearLayout>

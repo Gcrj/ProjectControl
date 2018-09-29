@@ -1,6 +1,7 @@
 package com.gcrj.projectcontrol.http
 
 import com.gcrj.projectcontrol.bean.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -13,11 +14,11 @@ interface ApiService {
     @GET("projectList")
     fun projectList(): Call<ResponseBean<List<ProjectBean>>>
 
-    @GET("subProject")
-    fun subProjectList(): Call<ResponseBean<List<SubProjectBean>>>
+    @GET("subProjectByUser")
+    fun subProjectListByUser(): Call<ResponseBean<List<SubProjectBean>>>
 
     @FormUrlEncoded
-    @POST("subProject")
+    @POST("subProjectByUser")
     fun addSubProject(@Field("name") name: String, @Field("projectId") projectId: Int): Call<ResponseBean<Nothing>>
 
     @GET("activity")
@@ -25,10 +26,23 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("activity")
-    fun addActivity(@Field("subProjectId") subProjectId: Int, @Field("activityName") activityName: String, @Field("activityRelatedName") type: String): Call<ResponseBean<Nothing>>
+    fun addActivity(@Field("subProjectId") subProjectId: Int, @Field("activityName") activityName: String, @Field("activityRelatedName") activityRelatedName: String): Call<ResponseBean<Nothing>>
 
     @FormUrlEncoded
-    @POST("activityRelated")
+    @POST("addActivityRelated")
+    fun addActivityRelated(@Field("subProjectId") subProjectId: Int, @Field("activityId") activityId: Int, @Field("activityRelatedName") activityRelatedName: String): Call<ResponseBean<Nothing>>
+
+    @FormUrlEncoded
+    @POST("updateActivityRelated")
     fun modifyActivityRelated(@Field("subProjectId") subProjectId: Int, @Field("activityRelated") activityRelated: String): Call<ResponseBean<Nothing>>
+
+    @GET("activityRelated")
+    fun activityRelatedList(@Query("activityId") activityId: Int): Call<ResponseBean<List<ActivityRelatedBean>>>
+
+    @GET("subProjectByProject")
+    fun subProjectListByProject(@Query("projectId") projectId: Int): Call<ResponseBean<List<SubProjectBean>>>
+
+    @GET("sheet")
+    fun getXls(): Call<ResponseBody>
 
 }

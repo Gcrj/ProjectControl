@@ -7,12 +7,12 @@
 
     <application
         android:name=".BaseApplication"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activity.SplashActivity"
             android:configChanges="screenSize|keyboardHidden"
@@ -77,9 +77,9 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/setting" />
         <activity
-            android:name=".activity.NewTaskActivity"
+            android:name=".activity.NewSubProjectActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/new_task" />
+            android:label="@string/new_sub_project" />
         <activity
             android:name=".activity.NewActivityActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -93,6 +93,23 @@
             android:name=".activity.ActivityRelatedActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/activity_related" />
+        <activity
+            android:name=".activity.SubProjectActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".activity.NewActivityRelatedActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${JPUSH_PKGNAME}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider" />
+        </provider>
     </application>
 
 </manifest>

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">项目控制</string>
     <string name="mine">我的</string>
-    <string name="task">任务</string>
+    <string name="sub_project">子项目</string>
     <string name="project">项目</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
@@ -14,10 +14,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_task">新建任务</string>
+    <string name="new_sub_project">新建子项目</string>
     <string name="new_activity">新建界面</string>
-    <string name="task_name">任务名</string>
+    <string name="sub_project_name">子项目名</string>
     <string name="activity">界面</string>
     <string name="activity_name">界面名</string>
     <string name="activity_related">界面相关</string>
+    <string name="new_activity_related">新建界面相关</string>
+    <string name="submit">提交</string>
+    <string name="preview_xls">预览周报</string>
 </resources>
