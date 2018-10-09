@@ -29,7 +29,7 @@
         tools:text="用户名" />
 
     <TextView
-        android:id="@+id/tv_preview_xls"
+        android:id="@+id/tv_preview_and_submit_xls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -37,7 +37,7 @@
         android:drawableEnd="@android:drawable/ic_media_play"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:text="@string/preview_xls"
+        android:text="@string/preview_and_submit_xls"
         android:textColor="#333333"
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@id/tv_name" />
@@ -54,6 +54,6 @@
         android:text="@string/setting"
         android:textColor="#333333"
         android:textSize="15sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_preview_xls" />
+        app:layout_constraintTop_toBottomOf="@id/tv_preview_and_submit_xls" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

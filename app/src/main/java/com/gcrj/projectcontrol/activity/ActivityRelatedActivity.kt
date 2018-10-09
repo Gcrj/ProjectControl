@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gcrj.projectcontrol.R
-import com.gcrj.projectcontrol.adapter.ActivityAdapter
 import com.gcrj.projectcontrol.adapter.ActivityRelatedAdapter
 import com.gcrj.projectcontrol.base.BaseActivity
 import com.gcrj.projectcontrol.bean.ActivityRelatedBean

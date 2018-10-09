@@ -22,5 +22,6 @@
     <string name="activity_related">界面相关</string>
     <string name="new_activity_related">新建界面相关</string>
     <string name="submit">提交</string>
-    <string name="preview_xls">预览周报</string>
+    <string name="preview_and_submit_xls">预览和提交周报</string>
+    <string name="preview">预览</string>
 </resources>

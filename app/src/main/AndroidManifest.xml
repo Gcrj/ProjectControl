@@ -100,7 +100,7 @@
             android:name=".activity.NewActivityRelatedActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
 
-        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!-- android:name="android.support.v4.content.FileProvider" -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${JPUSH_PKGNAME}.provider"
@@ -110,6 +110,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider" />
         </provider>
+
+        <activity android:name=".activity.PreviewXlsProjectActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.gcrj.projectcontrol.http
 
 import com.gcrj.projectcontrol.bean.*
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -19,7 +20,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("subProjectByUser")
-    fun addSubProject(@Field("name") name: String, @Field("projectId") projectId: Int): Call<ResponseBean<Nothing>>
+    fun addSubProject(@Field("name") name: String, @Field("projectId") projectId: Int, @Field("deadline") deadline: String): Call<ResponseBean<Nothing>>
 
     @GET("activity")
     fun activityList(@Query("subProjectId") subProjectId: Int): Call<ResponseBean<List<ActivityBean>>>
@@ -42,7 +43,13 @@ interface ApiService {
     @GET("subProjectByProject")
     fun subProjectListByProject(@Query("projectId") projectId: Int): Call<ResponseBean<List<SubProjectBean>>>
 
-    @GET("sheet")
-    fun getXls(): Call<ResponseBody>
+    @POST("sheet")
+    fun previewXls(@Body params: RequestBody): Call<ResponseBody>
+
+    @POST("sheetInfo")
+    fun submitXls(@Body params: RequestBody): Call<ResponseBean<Nothing>>
+
+    @GET("sheetInfo")
+    fun previewXlsProjectList(): Call<ResponseBean<List<ProjectBean>>>
 
 }

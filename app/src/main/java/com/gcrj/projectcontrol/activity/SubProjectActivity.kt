@@ -3,6 +3,8 @@ package com.gcrj.projectcontrol.activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gcrj.projectcontrol.R
 import com.gcrj.projectcontrol.adapter.SubProjectAdapter
 import com.gcrj.projectcontrol.base.BaseActivity
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_sub_project.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
-class SubProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener, androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener {
+class SubProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener, SwipeRefreshLayout.OnRefreshListener {
 
     private val projectId by lazy {
         intent.getIntExtra("project_id", 0)
@@ -56,9 +58,9 @@ class SubProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener, androi
                 }
 
                 if (adapter.data.isEmpty()) {
-                    recycler_view.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@SubProjectActivity)
+                    recycler_view.layoutManager = LinearLayoutManager(this@SubProjectActivity)
                     recycler_view.adapter = adapter
-                    val divider = RecycleViewDivider(this@SubProjectActivity, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL)
+                    val divider = RecycleViewDivider(this@SubProjectActivity, LinearLayoutManager.HORIZONTAL)
                     recycler_view.addItemDecoration(divider)
                     adapter.setOnItemClickListener { _, _, position ->
                         startActivity<ActivityActivity> {

@@ -91,8 +91,18 @@ class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayou
 
 
             dialog.show()
+            var month = (date_picker.month + 1).toString()
+            if (month.length == 1) {
+                month = "0$month"
+            }
+            var dayOfMonth = date_picker.dayOfMonth.toString()
+            if (dayOfMonth.length == 1) {
+                dayOfMonth = "0$dayOfMonth"
+            }
+
+            val deadline = "${date_picker.year}-$month-$dayOfMonth"
             RetrofitManager.apiService.addSubProject(name, data[position - 1].id
-                    ?: 0).enqueue(newSubProjectCallback)
+                    ?: 0, deadline).enqueue(newSubProjectCallback)
         }
     }
 
