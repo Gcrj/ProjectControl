@@ -24,4 +24,5 @@
     <string name="submit">提交</string>
     <string name="preview_and_submit_xls">预览和提交周报</string>
     <string name="preview">预览</string>
+    <string name="add_custom">增加自定义</string>
 </resources>

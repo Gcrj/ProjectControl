@@ -4,32 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp">
+    android:padding="10dp">
 
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="middle"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@+id/cb"
-        app:layout_constraintEnd_toStartOf="@+id/tv_deadline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cb"
-        tools:text="子项目名" />
+        tools:text="标题" />
 
     <TextView
-        android:id="@+id/tv_deadline"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="middle"
         android:singleLine="true"
-        app:layout_constraintBottom_toBottomOf="@+id/cb"
-        app:layout_constraintEnd_toStartOf="@+id/cb"
-        app:layout_constraintStart_toEndOf="@+id/tv"
-        app:layout_constraintTop_toTopOf="@+id/cb"
-        tools:text="截止日期" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:text="内容一大坨思密达" />
 
     <CheckBox
         android:id="@+id/cb"
@@ -37,14 +35,5 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cb" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.gcrj.projectcontrol.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -14,10 +15,12 @@ import com.gcrj.projectcontrol.adapter.PreviewXlsProjectAdapter
 import com.gcrj.projectcontrol.base.BaseActivity
 import com.gcrj.projectcontrol.bean.ProjectBean
 import com.gcrj.projectcontrol.bean.ResponseBean
+import com.gcrj.projectcontrol.bean.XlsProjectBean
 import com.gcrj.projectcontrol.http.NothingResponseCallback
 import com.gcrj.projectcontrol.http.ResponseCallback
 import com.gcrj.projectcontrol.http.RetrofitManager
 import com.gcrj.projectcontrol.util.ToastUtils
+import com.gcrj.projectcontrol.util.startActivityForResult
 import com.gcrj.projectcontrol.view.LoadingLayout
 import com.gcrj.projectcontrol.view.ProgressDialog
 import com.gcrj.projectcontrol.viewRelated.RecycleViewDivider
@@ -38,7 +41,11 @@ import java.net.URLDecoder
 
 class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener {
 
-    private var preciewCall: Call<ResponseBody>? = null
+    companion object {
+        private val REQUEST_CODE_CUSTOM = 1
+    }
+
+    private var previewCall: Call<ResponseBody>? = null
     private var submitCall: Call<ResponseBean<Nothing>>? = null
 
     private val dialog by lazy {
@@ -46,7 +53,6 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
         dialog
     }
 
-    private var data: List<ProjectBean>? = null
     private val adapter by lazy {
         PreviewXlsProjectAdapter()
     }
@@ -75,7 +81,6 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                     return
                 }
 
-                this@PreviewXlsProjectActivity.data = data
                 recycler_view.layoutManager = LinearLayoutManager(this@PreviewXlsProjectActivity)
                 recycler_view.adapter = adapter
                 val divider = RecycleViewDivider(this@PreviewXlsProjectActivity, LinearLayoutManager.HORIZONTAL)
@@ -85,7 +90,9 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                     bean.expanded = !bean.expanded
                     adapter.notifyItemChanged(position)
                 }
-                adapter.setNewData(data)
+                adapter.setNewData(data.map {
+                    XlsProjectBean.parseXlsProjectBean(it)
+                })
                 loading_layout.state = LoadingLayout.SUCCESS
                 invalidateOptionsMenu()
             }
@@ -113,12 +120,13 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?) = data != null
+    override fun onPrepareOptionsMenu(menu: Menu?) = loading_layout.state == LoadingLayout.SUCCESS
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.menu_add_custom -> startActivityForResult<CustomXlsActivity>(REQUEST_CODE_CUSTOM)
             R.id.menu_preview -> {
-                val filterData = data!!.asSequence().map { it.clone() }.filter {
+                val filterData = adapter.data.asSequence().map { if (it.type == XlsProjectBean.TYPE_CUSTOM) it else XlsProjectBean.parseXlsProjectBean(it.clone()) }.filter {
                     it.checked
                 }.toList()
 
@@ -129,7 +137,9 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
 
                 dialog.setMessage("正在获取周报")
                 dialog.show()
-                filterData.forEach { project ->
+                filterData.filter {
+                    it.type == XlsProjectBean.TYPE_PROJECT
+                }.forEach { project ->
                     project.subProject = project.subProject?.filter {
                         it.checked
                     }
@@ -146,12 +156,12 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                         }
                     }
                 }
-                preciewCall = RetrofitManager.apiService.previewXls(RequestBody.create(okhttp3.MediaType.parse("application/json"), Gson().toJson(filterData)))
-                preciewCall?.enqueue(previewCallback)
+                previewCall = RetrofitManager.apiService.previewXls(RequestBody.create(okhttp3.MediaType.parse("application/json;charset=utf-8"), Gson().toJson(filterData)))
+                previewCall?.enqueue(previewCallback)
                 return true
             }
             R.id.menu_submit -> {
-                val filterData = data!!.asSequence().map { it.clone() }.filter {
+                val filterData = adapter.data.asSequence().map { if (it.type == XlsProjectBean.TYPE_CUSTOM) it else XlsProjectBean.parseXlsProjectBean(it.clone()) }.filter {
                     it.checked
                 }.toList()
 
@@ -162,7 +172,9 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
 
                 dialog.setMessage("正在提交周报")
                 dialog.show()
-                filterData.forEach { project ->
+                filterData.filter {
+                    it.type == XlsProjectBean.TYPE_PROJECT
+                }.forEach { project ->
                     project.subProject = project.subProject?.filter {
                         it.checked
                     }
@@ -179,7 +191,7 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                         }
                     }
                 }
-                submitCall = RetrofitManager.apiService.submitXls(RequestBody.create(okhttp3.MediaType.parse("application/json"), Gson().toJson(filterData)))
+                submitCall = RetrofitManager.apiService.submitXls(RequestBody.create(okhttp3.MediaType.parse("application/json;charset=utf-8"), Gson().toJson(filterData)))
                 submitCall?.enqueue(submitCallback)
                 return true
             }
@@ -201,9 +213,15 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                     return
                 }
 
-                if (response.body()?.contentType()?.toString() == "text/html;charset=utf-8") {
+                if (response.body()?.contentType()?.toString() == "application/json;charset=utf-8") {
                     try {
-                        val responseBean = Gson().fromJson<ResponseBean<Nothing>>(response.body()!!.string(), object : TypeToken<ResponseBean<Nothing>>() {}.type)
+                        val body = response.body()
+                        if (body == null) {
+                            ToastUtils.showToast("body为空")
+                            return
+                        }
+
+                        val responseBean = Gson().fromJson<ResponseBean<Nothing>>(body.string(), object : TypeToken<ResponseBean<Nothing>>() {}.type)
                         ToastUtils.showToast(responseBean.msg ?: "未知错误")
                     } catch (e: JsonParseException) {
                         ToastUtils.showToast("未知错误")
@@ -225,7 +243,16 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                         }
 
                         val file = File(this@PreviewXlsProjectActivity.cacheDir, name)
-                        fis = response.body()!!.byteStream()
+                        val body = response.body()
+                        if (body == null) {
+                            runOnUiThread {
+                                dialog.dismiss()
+                                ToastUtils.showToast("body为空")
+                            }
+                            return@Runnable
+                        }
+
+                        fis = body.byteStream()
                         fos = FileOutputStream(file)
                         val b = ByteArray(1024)
                         var read = fis.read(b)
@@ -301,9 +328,20 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CUSTOM && resultCode == Activity.RESULT_OK && data != null) {
+            val xlsProjectBean = XlsProjectBean()
+            xlsProjectBean.title = data.getStringExtra("title")
+            xlsProjectBean.content = data.getStringExtra("content")
+            adapter.addData(xlsProjectBean)
+            recycler_view.scrollToPosition(adapter.data.size - 1)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        preciewCall?.cancel()
+        previewCall?.cancel()
     }
 
 }

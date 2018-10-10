@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_add_custom"
+        android:title="@string/add_custom" />
+
+    <item
         android:id="@+id/menu_preview"
         android:title="@string/preview" />
 

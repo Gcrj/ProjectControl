@@ -111,7 +111,14 @@
                 android:resource="@xml/file_provider" />
         </provider>
 
-        <activity android:name=".activity.PreviewXlsProjectActivity"></activity>
+        <activity
+            android:name=".activity.PreviewXlsProjectActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/preview_and_submit_xls" />
+        <activity
+            android:name=".activity.CustomXlsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/add_custom" />
     </application>
 
 </manifest>

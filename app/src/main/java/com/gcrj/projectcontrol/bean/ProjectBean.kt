@@ -1,6 +1,6 @@
 package com.gcrj.projectcontrol.bean
 
-class ProjectBean : CheckableAndExpandableBean(), Cloneable {
+open class ProjectBean : CheckableAndExpandableBean(), Cloneable {
 
     var id: Int? = null
     var name: String? = null

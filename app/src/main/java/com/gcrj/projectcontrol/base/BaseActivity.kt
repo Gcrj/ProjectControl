@@ -72,9 +72,12 @@ open class BaseActivity : AppCompatActivity() {
         } else if (swipeEnableThisTime && ev.action == MotionEvent.ACTION_UP) {
             val moveDistanceX = ev.x - downX
             if (moveDistanceX > 200) {
-                finish()
-                val now = SystemClock.uptimeMillis()
-                return super.dispatchTouchEvent(MotionEvent.obtain(now, now, MotionEvent.ACTION_CANCEL, 0.0f, 0.0f, 0))
+                try {
+                    val now = SystemClock.uptimeMillis()
+                    return super.dispatchTouchEvent(MotionEvent.obtain(now, now, MotionEvent.ACTION_CANCEL, 0.0f, 0.0f, 0))
+                } finally {
+                    finish()
+                }
             }
         }
 

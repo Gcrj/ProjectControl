@@ -10,5 +10,4 @@ open class CheckableAndExpandableBean {
     @Transient
     var expanded = false
 
-
 }

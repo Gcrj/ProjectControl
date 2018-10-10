@@ -21,6 +21,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        swipeFinishEnable = false
         setContentView(R.layout.activity_main)
         bnv.setOnNavigationItemSelectedListener(this)
         bnv.itemIconSize = ViewGroup.LayoutParams.WRAP_CONTENT

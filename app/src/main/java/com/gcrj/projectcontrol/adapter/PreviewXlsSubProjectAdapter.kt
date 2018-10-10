@@ -19,6 +19,7 @@ class PreviewXlsSubProjectAdapter(private val list: List<SubProjectBean>?) : Bas
 
     override fun convert(helper: BaseViewHolder, item: SubProjectBean) {
         helper.setText(R.id.tv, "↘${item.name}")
+        helper.setText(R.id.tv_deadline, "${item.deadline}")
 
         val recyclerView = helper.getView<RecyclerView>(R.id.recycler_view)
         val adapter = if (recyclerView.adapter == null) {
