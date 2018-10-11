@@ -3,6 +3,7 @@ package com.gcrj.projectcontrol.adapter
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -25,11 +26,6 @@ class PreviewXlsSubProjectAdapter(private val list: List<SubProjectBean>?) : Bas
         val adapter = if (recyclerView.adapter == null) {
             val adapter = PreviewXlsActivityAdapter(item.activity)
             recyclerView.adapter = adapter
-            adapter.setOnItemClickListener { _, _, position ->
-                val bean = adapter.data[position]
-                bean.expanded = !bean.expanded
-                adapter.notifyItemChanged(position)
-            }
             recyclerView.layoutManager = SimpleAdaptiveLayoutManager(mContext)
             adapter
         } else {
@@ -38,14 +34,10 @@ class PreviewXlsSubProjectAdapter(private val list: List<SubProjectBean>?) : Bas
             adapter
         }
 
-        if (item.expanded) {
-            recyclerView.visibility = View.VISIBLE
-        } else {
-            recyclerView.visibility = View.GONE
-        }
+        recyclerView.visibility = if (item.expanded) View.VISIBLE else View.GONE
 
         val cb = helper.getView<CheckBox>(R.id.cb)
-        cb.isChecked = item.checked
+        cb.tag = item.checked
         val onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
             item.checked = isChecked
             item.activity?.forEach { activity ->
@@ -68,6 +60,14 @@ class PreviewXlsSubProjectAdapter(private val list: List<SubProjectBean>?) : Bas
 
             callListener(it)
         }
+
+        val ivArrow = helper.getView<ImageView>(R.id.iv_arrow)
+        ivArrow.rotation = if (item.expanded) 90F else 0F
+        ivArrow.setOnClickListener {
+            item.expanded = !item.expanded
+            recyclerView.visibility = if (item.expanded) View.VISIBLE else View.GONE
+            ivArrow.animate().rotation(if (item.expanded) 90F else 0F).start()
+        }
     }
 
     private fun callListener(isChecked: Boolean) {
@@ -75,6 +75,12 @@ class PreviewXlsSubProjectAdapter(private val list: List<SubProjectBean>?) : Bas
                 || (!isChecked && list!!.count { it.checked } == 0)) {
             listener?.invoke(isChecked)
         }
+    }
+
+    override fun onViewAttachedToWindow(holder: BaseViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        val cb = holder.getView<CheckBox>(R.id.cb)
+        cb.isChecked = cb.tag as Boolean
     }
 
 }

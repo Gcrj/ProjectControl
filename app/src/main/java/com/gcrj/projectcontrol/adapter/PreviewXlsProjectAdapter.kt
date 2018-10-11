@@ -3,6 +3,7 @@ package com.gcrj.projectcontrol.adapter
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -29,11 +30,6 @@ class PreviewXlsProjectAdapter : BaseMultiItemQuickAdapter<XlsProjectBean, BaseV
                 val adapter = if (recyclerView.adapter == null) {
                     val adapter = PreviewXlsSubProjectAdapter(item.subProject)
                     recyclerView.adapter = adapter
-                    adapter.setOnItemClickListener { _, _, position ->
-                        val bean = adapter.data[position]
-                        bean.expanded = !bean.expanded
-                        adapter.notifyItemChanged(position)
-                    }
                     recyclerView.layoutManager = SimpleAdaptiveLayoutManager(mContext)
                     adapter
                 } else {
@@ -42,14 +38,10 @@ class PreviewXlsProjectAdapter : BaseMultiItemQuickAdapter<XlsProjectBean, BaseV
                     adapter
                 }
 
-                if (item.expanded) {
-                    recyclerView.visibility = View.VISIBLE
-                } else {
-                    recyclerView.visibility = View.GONE
-                }
+                recyclerView.visibility = if (item.expanded) View.VISIBLE else View.GONE
 
                 val cb = helper.getView<CheckBox>(R.id.cb)
-                cb.isChecked = item.checked
+                cb.tag = item.checked
                 val onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
                     item.checked = isChecked
                     item.subProject?.forEach { subProject ->
@@ -71,17 +63,31 @@ class PreviewXlsProjectAdapter : BaseMultiItemQuickAdapter<XlsProjectBean, BaseV
                     item.checked = it
                     cb.setOnCheckedChangeListener(onCheckedChangeListener)
                 }
+
+                val ivArrow = helper.getView<ImageView>(R.id.iv_arrow)
+                ivArrow.rotation = if (item.expanded) 90F else 0F
+                ivArrow.setOnClickListener {
+                    item.expanded = !item.expanded
+                    recyclerView.visibility = if (item.expanded) View.VISIBLE else View.GONE
+                    ivArrow.animate().rotation(if (item.expanded) 90F else 0F).start()
+                }
             }
             XlsProjectBean.TYPE_CUSTOM -> {
                 helper.setText(R.id.tv_title, item.title)
                 helper.setText(R.id.tv_content, item.content)
                 val cb = helper.getView<CheckBox>(R.id.cb)
-                cb.isChecked = item.checked
+                cb.tag = item.checked
                 cb.setOnCheckedChangeListener { _, isChecked ->
                     item.checked = isChecked
                 }
             }
         }
+    }
+
+    override fun onViewAttachedToWindow(holder: BaseViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        val cb = holder.getView<CheckBox>(R.id.cb)
+        cb.isChecked = cb.tag as Boolean
     }
 
 }

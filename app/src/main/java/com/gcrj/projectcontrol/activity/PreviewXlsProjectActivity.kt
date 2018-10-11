@@ -38,11 +38,13 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.net.URLDecoder
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener {
 
     companion object {
-        private val REQUEST_CODE_CUSTOM = 1
+        private const val REQUEST_CODE_CUSTOM = 1
     }
 
     private var previewCall: Call<ResponseBody>? = null
@@ -84,14 +86,34 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                 recycler_view.layoutManager = LinearLayoutManager(this@PreviewXlsProjectActivity)
                 recycler_view.adapter = adapter
                 val divider = RecycleViewDivider(this@PreviewXlsProjectActivity, LinearLayoutManager.HORIZONTAL)
+                divider.setDrawLastDivider(false)
                 recycler_view.addItemDecoration(divider)
-                adapter.setOnItemClickListener { _, _, position ->
-                    val bean = adapter.data[position]
-                    bean.expanded = !bean.expanded
-                    adapter.notifyItemChanged(position)
-                }
-                adapter.setNewData(data.map {
-                    XlsProjectBean.parseXlsProjectBean(it)
+
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                val monday = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
+                adapter.setNewData(data.map { project ->
+                    val bean = XlsProjectBean.parseXlsProjectBean(project)
+                    var hasChecked = false
+                    bean.subProject?.forEach { subProject ->
+                        if (subProject.deadline != null && subProject.deadline!! >= monday) {
+                            subProject.checked = true
+                            subProject.activity?.forEach { activity ->
+                                activity.checked = true
+                                activity.activityRelated?.forEach { activityRelated ->
+                                    activityRelated.checked = true
+                                }
+                            }
+
+                            hasChecked = true
+                        }
+                    }
+                    if (hasChecked) {
+                        bean.checked = true
+                    }
+
+                    bean
                 })
                 loading_layout.state = LoadingLayout.SUCCESS
                 invalidateOptionsMenu()
@@ -334,6 +356,7 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
             val xlsProjectBean = XlsProjectBean()
             xlsProjectBean.title = data.getStringExtra("title")
             xlsProjectBean.content = data.getStringExtra("content")
+            xlsProjectBean.checked = true
             adapter.addData(xlsProjectBean)
             recycler_view.scrollToPosition(adapter.data.size - 1)
         }
@@ -342,6 +365,7 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
     override fun onDestroy() {
         super.onDestroy()
         previewCall?.cancel()
+        submitCall?.cancel()
     }
 
 }

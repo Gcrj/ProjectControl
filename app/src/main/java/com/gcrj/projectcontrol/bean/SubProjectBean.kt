@@ -7,6 +7,7 @@ class SubProjectBean : CheckableAndExpandableBean(), Cloneable {
     var name: String? = null
     var progress: Int? = null
     var deadline: String? = null
+    var completionTime: String? = null
 
     var activity: List<ActivityBean>? = null
 

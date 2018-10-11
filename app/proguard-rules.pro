@@ -44,3 +44,9 @@
 
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
+
+-dontwarn okio.**
+#-keep class okio.**{*;}
+-dontwarn okhttp3.**
+#-keep class okhttp3.**{*;}
+-dontwarn retrofit2.Platform$Java8

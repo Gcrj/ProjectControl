@@ -1,5 +1,7 @@
 package com.gcrj.projectcontrol.activity
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -15,7 +17,10 @@ import com.gcrj.projectcontrol.view.LoadingLayout
 import com.gcrj.projectcontrol.view.ProgressDialog
 import kotlinx.android.synthetic.main.activity_new_sub_project.*
 import org.greenrobot.eventbus.EventBus
+import java.text.SimpleDateFormat
+import java.util.*
 
+@SuppressLint("SetTextI18n")
 class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayout.OnRetryListener {
 
     private lateinit var data: List<ProjectBean>
@@ -25,10 +30,33 @@ class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayou
         dialog
     }
 
+    private val calendar = Calendar.getInstance()
+    private var deadline = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+    private val dataPickerDialog by lazy {
+        val dataPickerDialog = DatePickerDialog(this@NewSubProjectActivity, 0, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            var realMonth = (month + 1).toString()
+            if (realMonth.length == 1) {
+                realMonth = "0$realMonth"
+            }
+            var realDayOfMonth = dayOfMonth.toString()
+            if (realDayOfMonth.length == 1) {
+                realDayOfMonth = "0$realDayOfMonth"
+            }
+
+            deadline = "${year}-$realMonth-$realDayOfMonth"
+            date_picker.text = "截止日期：$deadline"
+        }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
+        dataPickerDialog
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_sub_project)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        date_picker.text = "截止日期：$deadline"
+        date_picker.setOnClickListener {
+            dataPickerDialog.show()
+        }
         btn_new_sub_project.setOnClickListener(this)
         loading_layout.setOnRetryListener(this)
         loading_layout.state = LoadingLayout.LOADING
@@ -91,16 +119,6 @@ class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayou
 
 
             dialog.show()
-            var month = (date_picker.month + 1).toString()
-            if (month.length == 1) {
-                month = "0$month"
-            }
-            var dayOfMonth = date_picker.dayOfMonth.toString()
-            if (dayOfMonth.length == 1) {
-                dayOfMonth = "0$dayOfMonth"
-            }
-
-            val deadline = "${date_picker.year}-$month-$dayOfMonth"
             RetrofitManager.apiService.addSubProject(name, data[position - 1].id
                     ?: 0, deadline).enqueue(newSubProjectCallback)
         }

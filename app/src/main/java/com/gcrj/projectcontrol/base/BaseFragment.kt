@@ -6,12 +6,13 @@ import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 
 /**
  * Created by zhangxin on 2017/7/19.
  */
 
-abstract class BaseFragment : androidx.fragment.app.Fragment() {
+abstract class BaseFragment : Fragment() {
 
     @JvmField
     protected val TAG: String = javaClass.simpleName

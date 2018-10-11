@@ -7,54 +7,49 @@
     android:layout_height="match_parent"
     tools:context=".activity.NewSubProjectActivity">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        tools:context=".activity.NewSubProjectActivity">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_sub_project_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp"
-            tools:context=".activity.NewSubProjectActivity">
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_sub_project_name"
+            <EditText
+                android:id="@+id/et_sub_project_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toTopOf="parent">
+                android:hint="@string/sub_project_name" />
 
-                <EditText
-                    android:id="@+id/et_sub_project_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/sub_project_name" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <Spinner
+            android:id="@+id/spinner"
+            style="@style/Widget.AppCompat.Spinner.DropDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" />
 
-            <Spinner
-                android:id="@+id/spinner"
-                style="@style/Widget.AppCompat.Spinner.DropDown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp" />
+        <TextView
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            tools:text="截止日期：2018-10-11" />
 
-            <DatePicker
-                android:id="@+id/date_picker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp" />
+        <Button
+            android:id="@+id/btn_new_sub_project"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/new_sub_project" />
 
-            <Button
-                android:id="@+id/btn_new_sub_project"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/new_sub_project" />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
 </com.gcrj.projectcontrol.view.LoadingLayout>

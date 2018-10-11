@@ -13,6 +13,7 @@
         android:ellipsize="middle"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@+id/cb"
+        app:layout_constraintEnd_toStartOf="@+id/cb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cb"
         tools:text="标题" />

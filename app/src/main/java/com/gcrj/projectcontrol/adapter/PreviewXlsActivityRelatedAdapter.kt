@@ -16,7 +16,7 @@ class PreviewXlsActivityRelatedAdapter(private val list: List<ActivityRelatedBea
     override fun convert(helper: BaseViewHolder, item: ActivityRelatedBean) {
         helper.setText(R.id.tv, "↘↘↘${item.name}")
         val cb = helper.getView<CheckBox>(R.id.cb)
-        cb.isChecked = item.checked
+        cb.tag = item.checked
         cb.setOnCheckedChangeListener { _, isChecked ->
             item.checked = isChecked
             if ((isChecked && list!!.count { it.checked } == 1)
@@ -24,6 +24,12 @@ class PreviewXlsActivityRelatedAdapter(private val list: List<ActivityRelatedBea
                 listener?.invoke(isChecked)
             }
         }
+    }
+
+    override fun onViewAttachedToWindow(holder: BaseViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        val cb = holder.getView<CheckBox>(R.id.cb)
+        cb.isChecked = cb.tag as Boolean
     }
 
 }

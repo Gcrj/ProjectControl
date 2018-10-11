@@ -79,6 +79,10 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     }
 
+    override fun onBackPressed() {
+        moveTaskToBack(false)
+    }
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             return true
