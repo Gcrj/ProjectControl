@@ -8,11 +8,15 @@ import com.gcrj.projectcontrol.bean.ActivityBean
 /**
  * Created by zhangxin on 2018/9/18.
  */
-class ActivityAdapter : BaseQuickAdapter<ActivityBean, BaseViewHolder>(R.layout.recycler_view_item_layout_activity) {
+class ActivityAdapter(private val canEdit: Boolean) : BaseQuickAdapter<ActivityBean, BaseViewHolder>(R.layout.recycler_view_item_layout_activity) {
 
     override fun convert(helper: BaseViewHolder, item: ActivityBean?) {
         helper.setText(R.id.tv_project, item?.name)
-        helper.setText(R.id.tv_progress, "当前进度 ${item?.progress}%")
+        if (canEdit) {
+            helper.setText(R.id.tv_progress, "当前进度 ${item?.progress}%")
+        } else {
+            helper.setText(R.id.tv_progress, "已完成")
+        }
     }
 
 }

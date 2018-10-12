@@ -12,7 +12,7 @@ class ProjectAdapter : BaseQuickAdapter<ProjectBean, BaseViewHolder>(R.layout.re
 
     override fun convert(helper: BaseViewHolder, item: ProjectBean?) {
         helper.setText(R.id.tv_project, item?.name)
-        helper.setText(R.id.tv_user, item?.create_user?.username)
+//        helper.setText(R.id.tv_user, item?.create_user?.username)
     }
 
 }

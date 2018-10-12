@@ -1,10 +1,6 @@
 package com.gcrj.projectcontrol.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.gcrj.projectcontrol.R
@@ -17,21 +13,23 @@ import com.gcrj.projectcontrol.http.RetrofitManager
 import com.gcrj.projectcontrol.util.Constant
 import com.gcrj.projectcontrol.util.ToastUtils
 import com.gcrj.projectcontrol.util.startActivity
-import com.gcrj.projectcontrol.util.startActivityForResult
 import com.gcrj.projectcontrol.view.LoadingLayout
 import com.gcrj.projectcontrol.viewRelated.RecycleViewDivider
 import kotlinx.android.synthetic.main.activity_activity.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import java.util.*
 
 class ActivityActivity : BaseActivity(), LoadingLayout.OnRetryListener, androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener {
 
     private val subProjectId by lazy {
         intent.getIntExtra("sub_project_id", 0)
     }
+    private val canEdit by lazy {
+        intent.getBooleanExtra(Constant.CAN_EDIT, true)
+    }
+
     private val adapter by lazy {
-        ActivityAdapter()
+        ActivityAdapter(canEdit)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,9 +74,11 @@ class ActivityActivity : BaseActivity(), LoadingLayout.OnRetryListener, androidx
                     recycler_view.addItemDecoration(divider)
                     adapter.setOnItemClickListener { _, _, position ->
                         startActivity<ActivityRelatedActivity> {
-                            it.putExtra(Constant.ACTIONBAR_TITLE, adapter.data[position].name)
-                            it.putExtra("sub_project_id", adapter.data[position].sub_project_id)
-                            it.putExtra("activity_id", adapter.data[position].id)
+                            val bean = adapter.data[position]
+                            it.putExtra(Constant.CAN_EDIT, canEdit)
+                            it.putExtra(Constant.ACTIONBAR_TITLE, bean.name)
+                            it.putExtra("sub_project_id", bean.sub_project_id)
+                            it.putExtra("activity_id", bean.id)
                         }
                     }
                     loading_layout.state = LoadingLayout.SUCCESS
@@ -117,7 +117,10 @@ class ActivityActivity : BaseActivity(), LoadingLayout.OnRetryListener, androidx
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onPrepareOptionsMenu(menu: Menu?) = canEdit
+
+    override
+    fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_new_activity -> {
                 startActivity<NewActivityActivity> {

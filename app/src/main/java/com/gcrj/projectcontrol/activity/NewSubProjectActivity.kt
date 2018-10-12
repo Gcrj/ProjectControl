@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import com.gcrj.projectcontrol.R
 import com.gcrj.projectcontrol.base.BaseActivity
 import com.gcrj.projectcontrol.bean.ProjectBean
@@ -23,7 +23,6 @@ import java.util.*
 @SuppressLint("SetTextI18n")
 class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayout.OnRetryListener {
 
-    private lateinit var data: List<ProjectBean>
     private val dialog by lazy {
         val dialog = ProgressDialog(this)
         dialog.setCancelable(false)
@@ -79,10 +78,12 @@ class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayou
                 }
 
                 loading_layout.state = LoadingLayout.SUCCESS
-                this@NewSubProjectActivity.data = data
-                val list = mutableListOf("请选择所属项目")
-                list.addAll(data.map { it.name ?: "" })
-                spinner.adapter = ArrayAdapter(this@NewSubProjectActivity, android.R.layout.simple_spinner_item, android.R.id.text1, list)
+                data.forEach {
+                    val checkBox = CheckBox(this@NewSubProjectActivity)
+                    checkBox.text = it.name
+                    checkBox.tag = it
+                    flow_group_view.addView(checkBox)
+                }
             }
 
             override fun onError(message: String) {
@@ -111,15 +112,24 @@ class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayou
                 return
             }
 
-            val position = spinner.selectedItemPosition
-            if (position == 0) {
+            var bean: ProjectBean? = null
+            run {
+                (0 until flow_group_view.childCount).forEach {
+                    val child = flow_group_view.getChildAt(it) as CheckBox
+                    if (child.isChecked) {
+                        bean = child.tag as ProjectBean
+                        return@run
+                    }
+                }
+            }
+
+            if (bean == null) {
                 ToastUtils.showToast("请选择所属项目")
                 return
             }
 
-
             dialog.show()
-            RetrofitManager.apiService.addSubProject(name, data[position - 1].id
+            RetrofitManager.apiService.addSubProject(name, bean?.id
                     ?: 0, deadline).enqueue(newSubProjectCallback)
         }
     }

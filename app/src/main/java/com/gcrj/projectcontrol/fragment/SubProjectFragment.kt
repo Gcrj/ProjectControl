@@ -2,12 +2,12 @@ package com.gcrj.projectcontrol.fragment
 
 
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gcrj.projectcontrol.R
 import com.gcrj.projectcontrol.activity.ActivityActivity
 import com.gcrj.projectcontrol.activity.NewSubProjectActivity
@@ -78,8 +78,10 @@ class SubProjectFragment : BaseFragment(), LoadingLayout.OnRetryListener, SwipeR
                     recycler_view.addItemDecoration(divider)
                     adapter.setOnItemClickListener { _, _, position ->
                         startActivity<ActivityActivity> {
-                            it.putExtra(Constant.ACTIONBAR_TITLE, adapter.data[position].name)
-                            it.putExtra("sub_project_id", adapter.data[position].id)
+                            val bean = adapter.data[position]
+                            it.putExtra(Constant.CAN_EDIT, bean.completionTime == null)
+                            it.putExtra(Constant.ACTIONBAR_TITLE, bean.name)
+                            it.putExtra("sub_project_id", bean.id)
                         }
                     }
                     loading_layout.state = LoadingLayout.SUCCESS

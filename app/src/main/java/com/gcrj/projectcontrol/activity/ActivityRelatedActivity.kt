@@ -33,8 +33,12 @@ class ActivityRelatedActivity : BaseActivity(), LoadingLayout.OnRetryListener, S
     private val activityId by lazy {
         intent.getIntExtra("activity_id", 0)
     }
+    private val canEdit by lazy {
+        intent.getBooleanExtra(Constant.CAN_EDIT, true)
+    }
+
     private val adapter by lazy {
-        ActivityRelatedAdapter()
+        ActivityRelatedAdapter(canEdit)
     }
 
     private val gson by lazy {
@@ -141,10 +145,13 @@ class ActivityRelatedActivity : BaseActivity(), LoadingLayout.OnRetryListener, S
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?) = canEdit
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_new_activity_related -> {
                 startActivity<NewActivityRelatedActivity> {
+                    it.putExtra(Constant.CAN_EDIT, canEdit)
                     it.putExtra(Constant.ACTIONBAR_TITLE, intent.getStringExtra(Constant.ACTIONBAR_TITLE))
                     it.putExtra("sub_project_id", subProjectId)
                     it.putExtra("activity_id", activityId)

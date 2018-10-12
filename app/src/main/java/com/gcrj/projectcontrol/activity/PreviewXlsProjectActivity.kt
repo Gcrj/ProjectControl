@@ -86,7 +86,6 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                 recycler_view.layoutManager = LinearLayoutManager(this@PreviewXlsProjectActivity)
                 recycler_view.adapter = adapter
                 val divider = RecycleViewDivider(this@PreviewXlsProjectActivity, LinearLayoutManager.HORIZONTAL)
-                divider.setDrawLastDivider(false)
                 recycler_view.addItemDecoration(divider)
 
                 val calendar = Calendar.getInstance()
@@ -287,11 +286,10 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                         runOnUiThread {
                             dialog.dismiss()
                             val intent = Intent(Intent.ACTION_VIEW)
-                            val uri: Uri
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                uri = Uri.fromFile(file)
+                            val uri = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                Uri.fromFile(file)
                             } else {
-                                uri = FileProvider.getUriForFile(this@PreviewXlsProjectActivity, BuildConfig.APPLICATION_ID + ".provider", file)
+                                FileProvider.getUriForFile(this@PreviewXlsProjectActivity, BuildConfig.APPLICATION_ID + ".provider", file)
                             }
 
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

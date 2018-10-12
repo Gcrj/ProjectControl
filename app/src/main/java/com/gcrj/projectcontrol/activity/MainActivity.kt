@@ -1,7 +1,6 @@
 package com.gcrj.projectcontrol.activity
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.fragment.app.transaction
@@ -10,6 +9,9 @@ import com.gcrj.projectcontrol.base.BaseActivity
 import com.gcrj.projectcontrol.fragment.MineFragment
 import com.gcrj.projectcontrol.fragment.ProjectFragment
 import com.gcrj.projectcontrol.fragment.SubProjectFragment
+import com.gcrj.projectcontrol.util.AppTool
+import com.gcrj.projectcontrol.util.ToastUtils
+import com.gcrj.projectcontrol.util.startActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -35,6 +37,16 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
                     is ProjectFragment -> projectFragment = it
                     is MineFragment -> mineFragment = it
                 }
+            }
+        }
+
+        AppTool.checkUpdate { bean, msg ->
+            if (bean?.hasUpdate == true) {
+                startActivity<UpdateActivity> {
+                    it.putExtra("bean", bean)
+                }
+            } else {
+                ToastUtils.showToast(msg ?: "已经是最新版本")
             }
         }
     }
@@ -81,14 +93,6 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
 
     override fun onBackPressed() {
         moveTaskToBack(false)
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            return true
-        }
-
-        return super.onKeyDown(keyCode, event)
     }
 
 }

@@ -13,7 +13,7 @@ class SubProjectAdapter : BaseQuickAdapter<SubProjectBean, BaseViewHolder>(R.lay
     override fun convert(helper: BaseViewHolder, item: SubProjectBean?) {
         helper.setText(R.id.tv_project, item?.name)
         if (item?.completionTime != null) {
-            helper.setText(R.id.tv_progress, "已完成${item.completionTime}")
+            helper.setText(R.id.tv_progress, "已于${item.completionTime}完成")
         } else {
             helper.setText(R.id.tv_progress, "当前进度 ${item?.progress}%")
         }

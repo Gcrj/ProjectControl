@@ -64,8 +64,10 @@ class SubProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener, SwipeR
                     recycler_view.addItemDecoration(divider)
                     adapter.setOnItemClickListener { _, _, position ->
                         startActivity<ActivityActivity> {
-                            it.putExtra(Constant.ACTIONBAR_TITLE, adapter.data[position].name)
-                            it.putExtra("sub_project_id", adapter.data[position].id)
+                            val bean = adapter.data[position]
+                            it.putExtra(Constant.CAN_EDIT, bean.completionTime == null)
+                            it.putExtra(Constant.ACTIONBAR_TITLE, bean.name)
+                            it.putExtra("sub_project_id", bean.id)
                         }
                     }
                     loading_layout.state = LoadingLayout.SUCCESS

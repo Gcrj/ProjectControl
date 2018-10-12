@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gcrj.projectcontrol">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -119,6 +121,13 @@
             android:name=".activity.CustomXlsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/add_custom" />
+        <activity
+            android:name=".activity.UpdateActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@style/DialogTheme" />
+
+        <service android:name=".service.UpdateService" />
     </application>
 
 </manifest>

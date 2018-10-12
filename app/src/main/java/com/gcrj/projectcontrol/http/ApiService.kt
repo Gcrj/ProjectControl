@@ -1,5 +1,6 @@
 package com.gcrj.projectcontrol.http
 
+import com.gcrj.projectcontrol.BuildConfig
 import com.gcrj.projectcontrol.bean.*
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -7,6 +8,9 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
+
+    @GET("checkUpdate")
+    fun checkUpdate(@Query("versionCode") versionCode: Int = 0, @Query("packageName") packageName: String = BuildConfig.APPLICATION_ID, @Query("channel") channel: String = BuildConfig.FLAVOR): Call<ResponseBean<CheckUpdateBean>>
 
     @FormUrlEncoded
     @POST("login")

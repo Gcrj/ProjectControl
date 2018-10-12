@@ -10,10 +10,16 @@ import com.gcrj.projectcontrol.bean.ActivityRelatedBean
 /**
  * Created by zhangxin on 2018/9/18.
  */
-class ActivityRelatedAdapter : BaseQuickAdapter<ActivityRelatedBean, BaseViewHolder>(R.layout.recycler_view_item_layout_activity_related) {
+class ActivityRelatedAdapter(private val canEdit: Boolean) : BaseQuickAdapter<ActivityRelatedBean, BaseViewHolder>(R.layout.recycler_view_item_layout_activity_related) {
 
     override fun convert(helper: BaseViewHolder, item: ActivityRelatedBean?) {
         helper.setText(R.id.tv_activity_related, item?.name)
+        if (!canEdit) {
+            helper.setText(R.id.tv_progress, "已完成")
+            helper.setGone(R.id.seek_bar, false)
+            return
+        }
+
         helper.setText(R.id.tv_progress, "当前进度 ${item?.progress}%")
         val seekBar = helper.getView<SeekBar>(R.id.seek_bar)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

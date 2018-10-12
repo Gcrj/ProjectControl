@@ -3,11 +3,13 @@ package com.gcrj.projectcontrol.base
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.ViewConfiguration
 import androidx.appcompat.app.AppCompatActivity
 import com.gcrj.projectcontrol.R
+import com.gcrj.projectcontrol.util.AppManager
 
 /**
  * Created by zhangxin on 2018/5/30.
@@ -28,10 +30,16 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppManager.get().addActivity(this)
         overridePendingTransition(R.anim.anim_in_from_right, R.anim.anim_out_to_left)
         if (intent.getStringExtra("actionbar_title") != null) {
             title = intent.getStringExtra("actionbar_title")
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AppManager.get().removeActivity(this)
     }
 
     override fun finish() {
@@ -93,6 +101,14 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            return true
+        }
+
+        return super.onKeyUp(keyCode, event)
     }
 
 }
