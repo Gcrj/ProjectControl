@@ -137,7 +137,7 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_preview_xls_project, menu)
+        menuInflater.inflate(R.menu.option_menu_preview_xls_project, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -145,8 +145,8 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.menu_add_custom -> startActivityForResult<CustomXlsActivity>(REQUEST_CODE_CUSTOM)
-            R.id.menu_preview -> {
+            R.id.option_menu_add_custom -> startActivityForResult<CustomXlsActivity>(REQUEST_CODE_CUSTOM)
+            R.id.option_menu_preview -> {
                 val filterData = adapter.data.asSequence().map { if (it.type == XlsProjectBean.TYPE_CUSTOM) it else XlsProjectBean.parseXlsProjectBean(it.clone()) }.filter {
                     it.checked
                 }.toList()
@@ -181,7 +181,7 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                 previewCall?.enqueue(previewCallback)
                 return true
             }
-            R.id.menu_submit -> {
+            R.id.option_menu_submit -> {
                 val filterData = adapter.data.asSequence().map { if (it.type == XlsProjectBean.TYPE_CUSTOM) it else XlsProjectBean.parseXlsProjectBean(it.clone()) }.filter {
                     it.checked
                 }.toList()

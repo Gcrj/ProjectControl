@@ -22,7 +22,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private int horizontalPadding;
     private boolean drawFirstDivider = true;
-    private boolean drawLastDivider = false;
+    private boolean drawLastDivider = true;
     private boolean drawLastSecondDivider = true;
 
     /**

@@ -10,7 +10,6 @@ import com.gcrj.projectcontrol.fragment.MineFragment
 import com.gcrj.projectcontrol.fragment.ProjectFragment
 import com.gcrj.projectcontrol.fragment.SubProjectFragment
 import com.gcrj.projectcontrol.util.AppTool
-import com.gcrj.projectcontrol.util.ToastUtils
 import com.gcrj.projectcontrol.util.startActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,40 +44,41 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemResele
                 startActivity<UpdateActivity> {
                     it.putExtra("bean", bean)
                 }
-            } else {
-                ToastUtils.showToast(msg ?: "已经是最新版本")
             }
+//            else {
+//                ToastUtils.showToast(msg ?: "已经是最新版本")
+//            }
         }
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         supportFragmentManager.transaction(allowStateLoss = true) {
             subProjectFragment?.let {
-                hide(it)
+                detach(it)
             }
             projectFragment?.let {
-                hide(it)
+                detach(it)
             }
             mineFragment?.let {
-                hide(it)
+                detach(it)
             }
 
             when (menuItem.itemId) {
-                R.id.menu_sub_project -> show(subProjectFragment!!)
-                R.id.menu_project -> {
+                R.id.option_menu_sub_project -> attach(subProjectFragment!!)
+                R.id.option_menu_project -> {
                     if (projectFragment == null) {
                         projectFragment = ProjectFragment()
                         add(R.id.fl_container, projectFragment!!)
                     } else {
-                        show(projectFragment!!)
+                        attach(projectFragment!!)
                     }
                 }
-                R.id.menu_mine -> {
+                R.id.option_menu_mine -> {
                     if (mineFragment == null) {
                         mineFragment = MineFragment()
                         add(R.id.fl_container, mineFragment!!)
                     } else {
-                        show(mineFragment!!)
+                        attach(mineFragment!!)
                     }
                 }
             }

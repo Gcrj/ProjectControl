@@ -1,5 +1,6 @@
 package com.gcrj.projectcontrol.util
 
+import com.gcrj.projectcontrol.BaseApplication
 import java.io.UnsupportedEncodingException
 import java.math.BigDecimal
 import java.security.MessageDigest
@@ -9,6 +10,11 @@ import java.security.NoSuchAlgorithmException
  * Created by zhangxin on 2018/6/5.
  */
 object Tool {
+
+    fun dp2px(dpValue: Float): Float {
+        val scale = BaseApplication.application.resources.displayMetrics.density
+        return dpValue * scale + 0.5f
+    }
 
     fun getMD5Str(input: String): String? {
         try {

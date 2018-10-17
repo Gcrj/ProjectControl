@@ -10,7 +10,7 @@ import retrofit2.http.*
 interface ApiService {
 
     @GET("checkUpdate")
-    fun checkUpdate(@Query("versionCode") versionCode: Int = 0, @Query("packageName") packageName: String = BuildConfig.APPLICATION_ID, @Query("channel") channel: String = BuildConfig.FLAVOR): Call<ResponseBean<CheckUpdateBean>>
+    fun checkUpdate(@Query("versionCode") versionCode: Int = BuildConfig.VERSION_CODE, @Query("packageName") packageName: String = BuildConfig.APPLICATION_ID, @Query("channel") channel: String = BuildConfig.FLAVOR): Call<ResponseBean<CheckUpdateBean>>
 
     @FormUrlEncoded
     @POST("login")
@@ -55,5 +55,23 @@ interface ApiService {
 
     @GET("sheetInfo")
     fun previewXlsProjectList(): Call<ResponseBean<List<ProjectBean>>>
+
+    @PUT("subProjectByUser")
+    fun updateSubProject(@Query("id") id: Int?, @Query("name") name: String? = null, @Query("deadline") deadline: String? = null, @Query("completionTime") completionTime: String? = null, @Query("versionName") versionName: String? = null): Call<ResponseBean<Nothing>>
+
+    @DELETE("subProjectByUser")
+    fun deleteubProject(@Query("id") id: Int?): Call<ResponseBean<Nothing>>
+
+    @PUT("activity")
+    fun updateActivity(@Query("id") id: Int?, @Query("name") name: String? = null): Call<ResponseBean<Nothing>>
+
+    @DELETE("activity")
+    fun deleteubActivity(@Query("subProjectId") subProjectId: Int?, @Query("activityId") activityId: Int?): Call<ResponseBean<Nothing>>
+
+    @PUT("updateActivityRelated")
+    fun updateActivityRelated(@Query("id") id: Int?, @Query("name") name: String? = null): Call<ResponseBean<Nothing>>
+
+    @DELETE("updateActivityRelated")
+    fun deleteubActivityRelated(@Query("subProjectId") subProjectId: Int?, @Query("activityRelatedId") activityRelatedId: Int?): Call<ResponseBean<Nothing>>
 
 }

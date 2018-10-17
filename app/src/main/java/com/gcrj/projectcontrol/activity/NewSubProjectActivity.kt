@@ -42,7 +42,7 @@ class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayou
                 realDayOfMonth = "0$realDayOfMonth"
             }
 
-            deadline = "${year}-$realMonth-$realDayOfMonth"
+            deadline = "$year-$realMonth-$realDayOfMonth"
             date_picker.text = "截止日期：$deadline"
         }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
         dataPickerDialog

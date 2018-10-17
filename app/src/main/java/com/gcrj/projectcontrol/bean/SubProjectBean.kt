@@ -8,7 +8,9 @@ class SubProjectBean : CheckableAndExpandableBean(), Cloneable {
     var progress: Int? = null
     var deadline: String? = null
     var completionTime: String? = null
+    var versionName: String? = null
 
+    var projectName: String? = null
     var activity: List<ActivityBean>? = null
 
     public override fun clone(): SubProjectBean {

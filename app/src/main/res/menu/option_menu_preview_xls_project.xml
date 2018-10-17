@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_add_custom"
+        android:id="@+id/option_menu_add_custom"
         android:title="@string/add_custom" />
 
     <item
-        android:id="@+id/menu_preview"
+        android:id="@+id/option_menu_preview"
         android:title="@string/preview" />
 
     <item
-        android:id="@+id/menu_submit"
+        android:id="@+id/option_menu_submit"
         android:title="@string/submit" />
 
 </menu>

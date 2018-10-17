@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_sub_project"
+        android:id="@+id/option_menu_sub_project"
         android:icon="@drawable/icon_sub_project"
         android:title="@string/sub_project" />
 
     <item
-        android:id="@+id/menu_project"
+        android:id="@+id/option_menu_project"
         android:icon="@drawable/icon_project"
         android:title="@string/project" />
 
     <item
-        android:id="@+id/menu_mine"
+        android:id="@+id/option_menu_mine"
         android:icon="@drawable/icon_mine"
         android:title="@string/mine" />
 

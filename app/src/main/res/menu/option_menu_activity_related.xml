@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_new_activity_related"
+        android:id="@+id/option_menu_new_activity_related"
         android:title="@string/new_activity_related" />
 
     <item
-        android:id="@+id/menu_submit"
+        android:id="@+id/option_menu_submit"
         android:title="@string/submit" />
 
 </menu>

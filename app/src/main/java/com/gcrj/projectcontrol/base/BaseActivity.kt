@@ -2,7 +2,6 @@ package com.gcrj.projectcontrol.base
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -78,14 +77,9 @@ open class BaseActivity : AppCompatActivity() {
 
             lastX = ev.x
         } else if (swipeEnableThisTime && ev.action == MotionEvent.ACTION_UP) {
-            val moveDistanceX = ev.x - downX
-            if (moveDistanceX > 200) {
-                try {
-                    val now = SystemClock.uptimeMillis()
-                    return super.dispatchTouchEvent(MotionEvent.obtain(now, now, MotionEvent.ACTION_CANCEL, 0.0f, 0.0f, 0))
-                } finally {
-                    finish()
-                }
+            if (ev.x - downX > 200) {
+                finish()
+                ev.action = MotionEvent.ACTION_CANCEL
             }
         }
 
