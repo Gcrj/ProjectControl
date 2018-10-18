@@ -184,24 +184,26 @@ class ActivityRelatedActivity : BaseActivity(), LoadingLayout.OnRetryListener, S
         }
     }
 
-    private val modifyCallback = object : NothingResponseCallback<Nothing>() {
+    private val modifyCallback by lazy {
+        object : NothingResponseCallback<Nothing>() {
 
-        override fun onStart() = !isDestroyed
+            override fun onStart() = !isDestroyed
 
-        override fun onSuccess() {
-            ToastUtils.showToast("修改成功")
-            EventBus.getDefault().post(RefreshProgress.INSTANCE)
-            finish()
+            override fun onSuccess() {
+                ToastUtils.showToast("修改成功")
+                EventBus.getDefault().post(RefreshProgress.INSTANCE)
+                finish()
+            }
+
+            override fun onError(message: String) {
+                ToastUtils.showToast(message)
+            }
+
+            override fun onNoNet(message: String) {
+                ToastUtils.showToast(message)
+            }
+
         }
-
-        override fun onError(message: String) {
-            ToastUtils.showToast(message)
-        }
-
-        override fun onNoNet(message: String) {
-            ToastUtils.showToast(message)
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

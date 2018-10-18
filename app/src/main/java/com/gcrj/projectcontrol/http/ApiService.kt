@@ -54,7 +54,7 @@ interface ApiService {
     fun submitXls(@Body params: RequestBody): Call<ResponseBean<Nothing>>
 
     @GET("sheetInfo")
-    fun previewXlsProjectList(): Call<ResponseBean<List<ProjectBean>>>
+    fun previewXlsProjectList(): Call<ResponseBean<SheetListBean>>
 
     @PUT("subProjectByUser")
     fun updateSubProject(@Query("id") id: Int?, @Query("name") name: String? = null, @Query("deadline") deadline: String? = null, @Query("completionTime") completionTime: String? = null, @Query("versionName") versionName: String? = null): Call<ResponseBean<Nothing>>
@@ -73,5 +73,12 @@ interface ApiService {
 
     @DELETE("updateActivityRelated")
     fun deleteubActivityRelated(@Query("subProjectId") subProjectId: Int?, @Query("activityRelatedId") activityRelatedId: Int?): Call<ResponseBean<Nothing>>
+
+    @POST("avator")
+    fun modifyAvator(@Body params: RequestBody): Call<ResponseBean<String>>
+
+    @FormUrlEncoded
+    @POST("password")
+    fun modifyPassword(@Field("password") password: String): Call<ResponseBean<Nothing>>
 
 }

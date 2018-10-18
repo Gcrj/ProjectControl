@@ -24,9 +24,7 @@ import java.util.*
 class NewSubProjectActivity : BaseActivity(), View.OnClickListener, LoadingLayout.OnRetryListener {
 
     private val dialog by lazy {
-        val dialog = ProgressDialog(this)
-        dialog.setCancelable(false)
-        dialog
+        ProgressDialog(this)
     }
 
     private val calendar = Calendar.getInstance()

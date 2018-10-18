@@ -13,8 +13,8 @@ import com.gcrj.projectcontrol.BuildConfig
 import com.gcrj.projectcontrol.R
 import com.gcrj.projectcontrol.adapter.PreviewXlsProjectAdapter
 import com.gcrj.projectcontrol.base.BaseActivity
-import com.gcrj.projectcontrol.bean.ProjectBean
 import com.gcrj.projectcontrol.bean.ResponseBean
+import com.gcrj.projectcontrol.bean.SheetListBean
 import com.gcrj.projectcontrol.bean.XlsProjectBean
 import com.gcrj.projectcontrol.http.NothingResponseCallback
 import com.gcrj.projectcontrol.http.ResponseCallback
@@ -73,12 +73,16 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
     }
 
     private val callback by lazy {
-        object : ResponseCallback<List<ProjectBean>>() {
+        object : ResponseCallback<SheetListBean>() {
 
             override fun onStart() = !isDestroyed
 
-            override fun onSuccess(data: List<ProjectBean>) {
-                if (data.isEmpty()) {
+            override fun onSuccess(data: SheetListBean) {
+                if (data.hasSubmitted == true) {
+                    ToastUtils.showToast("今日已提交过周报")
+                }
+
+                if (data.list == null || data.list!!.isEmpty()) {
                     loading_layout.state = LoadingLayout.EMPTY
                     return
                 }
@@ -92,7 +96,7 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
                 val monday = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
 
-                adapter.setNewData(data.map { project ->
+                adapter.setNewData(data.list!!.map { project ->
                     val bean = XlsProjectBean.parseXlsProjectBean(project)
                     var hasChecked = false
                     bean.subProject?.forEach { subProject ->
@@ -326,26 +330,28 @@ class PreviewXlsProjectActivity : BaseActivity(), LoadingLayout.OnRetryListener 
         }
     }
 
-    private val submitCallback = object : NothingResponseCallback<Nothing>() {
+    private val submitCallback by lazy {
+        object : NothingResponseCallback<Nothing>() {
 
-        override fun onStart() = !isDestroyed
+            override fun onStart() = !isDestroyed
 
-        override fun onSuccess() {
-            ToastUtils.showToast("提交成功")
+            override fun onSuccess() {
+                ToastUtils.showToast("提交成功")
+            }
+
+            override fun onError(message: String) {
+                ToastUtils.showToast(message)
+            }
+
+            override fun onNoNet(message: String) {
+                ToastUtils.showToast(message)
+            }
+
+            override fun onAfter() {
+                dialog.dismiss()
+            }
+
         }
-
-        override fun onError(message: String) {
-            ToastUtils.showToast(message)
-        }
-
-        override fun onNoNet(message: String) {
-            ToastUtils.showToast(message)
-        }
-
-        override fun onAfter() {
-            dialog.dismiss()
-        }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

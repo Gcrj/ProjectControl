@@ -102,7 +102,6 @@
             android:name=".activity.NewActivityRelatedActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
 
-        <!-- android:name="android.support.v4.content.FileProvider" -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${JPUSH_PKGNAME}.provider"
@@ -128,6 +127,8 @@
             android:theme="@style/DialogTheme" />
 
         <service android:name=".service.UpdateService" />
+
+        <activity android:name=".activity.ModifyPasswordActivity"></activity>
     </application>
 
 </manifest>
